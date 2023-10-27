@@ -33,7 +33,9 @@ const PokemonPage = ({ previous, next }) => {
     const hiddenAbility = pokemon.abilities.find(
         ability => ability.is_hidden === true
     );
+
     /* eslint no-console: "error" */
+
     console.log('hiddenAbility=', hiddenAbility);
     return (
         <>
