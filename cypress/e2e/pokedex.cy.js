@@ -7,7 +7,8 @@ describe('Pokedex', function () {
         );
     });
     it('pokemon page can be opened', function () {
-        cy.visit('http://localhost:5000/pokemon/wigglytuff');
+        cy.visit('http://localhost:5000');
+        cy.get('a[href*="/pokemon/wigglytuff"]').click();
         cy.contains('frisk');
         cy.contains('cute charm');
     });
