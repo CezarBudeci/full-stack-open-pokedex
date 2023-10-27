@@ -15,10 +15,10 @@ module.exports = {
     },
     plugins: ['react', 'jest'],
     rules: {
-        indent: ['error', 2],
+        indent: ['error', 4],
         'linebreak-style': ['error', 'unix'],
         quotes: ['error', 'single'],
-        semi: ['error', 'never'],
+        semi: ['error', 'always'],
         eqeqeq: 'error',
         'no-trailing-spaces': 'error',
         'object-curly-spacing': ['error', 'always'],
