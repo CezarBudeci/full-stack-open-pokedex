@@ -29,5 +29,6 @@ jobs:
                   heroku_app_name: 'cezar-budeci-pokedex'
                   heroku_email: 'cezarbudeci@gmail.com'
                   healthcheck: 'https://cezar-budeci-pokedex-ce8d59703a06.herokuapp.com/version'
-                  checkstring: '1.0.0'
+                  checkstring: '2.0.0'
                   delay: 5
+                  rollbackonhealthcheckfailed: true
