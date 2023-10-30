@@ -4,9 +4,12 @@ on:
     push:
         branches:
             - master
+    pull_request:
+        branches: [master]
+        types: [opened, synchronize]
 
 jobs:
-    simple_deployment_pipeline:
+    build_pipeline:
         runs-on: ubuntu-20.04
         steps:
             - uses: actions/checkout@v3
@@ -23,12 +26,27 @@ jobs:
                   command: npm run test:e2e
                   start: npm run start-prod
                   wait-on: http://localhost:5000
+
+    deployment_pipeline:
+        if: ${{ github.event_name == 'push' }}
+        needs: [build_pipeline]
+        runs-on: ubuntu-20.04
+        steps:
             - uses: akhileshns/heroku-deploy@master
               with:
                   heroku_api_key: ${{secrets.HEROKU_API_KEY}}
                   heroku_app_name: 'cezar-budeci-pokedex'
                   heroku_email: 'cezarbudeci@gmail.com'
                   healthcheck: 'https://cezar-budeci-pokedex-ce8d59703a06.herokuapp.com/version'
-                  checkstring: '2.0.0'
+                  checkstring: '1.0.0'
                   delay: 5
                   rollbackonhealthcheckfailed: true
+    taging_pipeline:
+        needs: [deployment_pipeline]
+        runs-on: ubuntu-20.04
+        steps:
+            - name: Bump version and push tag
+              uses: anothrNick/github-tag-action@1.67.0
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  DEFAULT_BUMP: 'patch'
