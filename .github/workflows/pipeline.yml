@@ -28,8 +28,7 @@ jobs:
                   wait-on: http://localhost:5000
 
     deployment_pipeline:
-        if: ${{ github.event_name == 'push' }}
-        needs: [build_pipeline]
+        # if: ${{ github.event_name == 'push' }}
         runs-on: ubuntu-20.04
         steps:
             - uses: akhileshns/heroku-deploy@3.12.14
