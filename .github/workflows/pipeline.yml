@@ -32,7 +32,7 @@ jobs:
         needs: [build_pipeline]
         runs-on: ubuntu-20.04
         steps:
-            - uses: akhileshns/heroku-deploy@master
+            - uses: akhileshns/heroku-deploy@3.12.14
               with:
                   heroku_api_key: ${{secrets.HEROKU_API_KEY}}
                   heroku_app_name: 'cezar-budeci-pokedex'
@@ -41,6 +41,7 @@ jobs:
                   checkstring: '1.0.0'
                   delay: 5
                   rollbackonhealthcheckfailed: true
+
     taging_pipeline:
         needs: [deployment_pipeline]
         runs-on: ubuntu-20.04
