@@ -4,7 +4,7 @@ on:
     push:
         branches:
             - master
-#test
+#test2
 jobs:
     hello_world_job:
         runs-on: ubuntu-20.04
