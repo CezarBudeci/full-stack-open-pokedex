@@ -9,7 +9,7 @@ on:
         types: [opened, synchronize]
 
 jobs:
-    build_pipeline:
+    build_test_deployment_pipeline:
         runs-on: ubuntu-20.04
         steps:
             - uses: actions/checkout@v3
@@ -26,13 +26,9 @@ jobs:
                   command: npm run test:e2e
                   start: npm run start-prod
                   wait-on: http://localhost:5000
-
-    deployment_pipeline:
-        if: ${{ github.event_name == 'push' }}
-        needs: [build_pipeline]
-        runs-on: ubuntu-20.04
-        steps:
-            - uses: akhileshns/heroku-deploy@master
+            - name: deployment
+              if: ${{ github.event_name == 'push' }}
+              uses: akhileshns/heroku-deploy@v3.12.14
               with:
                   heroku_api_key: ${{secrets.HEROKU_API_KEY}}
                   heroku_app_name: 'cezar-budeci-pokedex'
@@ -41,8 +37,10 @@ jobs:
                   checkstring: '1.0.0'
                   delay: 5
                   rollbackonhealthcheckfailed: true
+
     taging_pipeline:
-        needs: [deployment_pipeline]
+        if: ${{ github.event_name == 'push' }}
+        needs: [build_test_deployment_pipeline]
         runs-on: ubuntu-20.04
         steps:
             - name: Bump version and push tag
