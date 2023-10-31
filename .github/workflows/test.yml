@@ -14,5 +14,5 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
           COMMIT_MESSAGES_STRING: ${{join($COMMIT_MESSAGES)}}
-        if: ${{ contains($COMMIT_MESSAGES_STRING, #skip)}}
+        if: ${{ contains($COMMIT_MESSAGES_STRING, "#skip")}}
         run: echo "$COMMIT_MESSAGES_STRING"
