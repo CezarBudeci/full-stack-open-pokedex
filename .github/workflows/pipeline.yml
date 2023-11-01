@@ -47,3 +47,27 @@ jobs:
               checkstring: '1.0.0'
               delay: 5
               rollbackonhealthcheckfailed: true
+          - name: send success notification
+            uses: rjstone/discord-webhook-notify@v1.0.4
+            if: success()
+            with:
+                severity: 'info'
+                username: 'Github'
+                details: 'Last build was successful'
+                footer: 'Severity: Info'
+                text: 'New version deployed'
+                webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          - name: send failure notification
+            uses: rjstone/discord-webhook-notify@v1
+            if: failure()
+            with:
+                severity: 'error'
+                username: 'Github'
+                details: 'Last commit broke the build!'
+                footer: 'Severity: Error'
+                text: 'Build failed!'
+                webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+  
+
+            
