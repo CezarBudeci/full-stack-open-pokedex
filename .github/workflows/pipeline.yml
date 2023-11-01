@@ -1,49 +1,49 @@
-name: Deployment pipeline
+# name: Deployment pipeline
 
-on:
-    push:
-        branches:
-            - master
-    pull_request:
-        branches: [master]
-        types: [opened, synchronize]
+# on:
+#     push:
+#         branches:
+#             - master
+#     pull_request:
+#         branches: [master]
+#         types: [opened, synchronize]
 
-jobs:
-    build_test_pipeline:
-        runs-on: ubuntu-20.04
-        steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: '16'
-            - run: npm install
-            - run: npm run eslint
-            - run: npm run build
-            - run: npm run test
-            - name: e2e tests
-              uses: cypress-io/github-action@v5
-              with:
-                  command: npm run test:e2e
-                  start: npm run start-prod
-                  wait-on: http://localhost:5000
+# jobs:
+#     build_test_pipeline:
+#         runs-on: ubuntu-20.04
+#         steps:
+#             - uses: actions/checkout@v3
+#             - uses: actions/setup-node@v3
+#               with:
+#                   node-version: '16'
+#             - run: npm install
+#             - run: npm run eslint
+#             - run: npm run build
+#             - run: npm run test
+#             - name: e2e tests
+#               uses: cypress-io/github-action@v5
+#               with:
+#                   command: npm run test:e2e
+#                   start: npm run start-prod
+#                   wait-on: http://localhost:5000
 
-    deployment_tagging_pipeline:
-        if: ${{ github.event_name == 'push' && !(contains(join(github.event.commits.*.message), '#skip')) }}
-        needs: [build_test_pipeline]
-        runs-on: ubuntu-20.04
-        steps:
-          - uses: actions/checkout@v3
-          - name: Bump version and push tag
-            uses: anothrNick/github-tag-action@1.67.0
-            env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                DEFAULT_BUMP: 'patch'
-          - uses: akhileshns/heroku-deploy@v3.12.14
-            with:
-              heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-              heroku_app_name: 'cezar-budeci-pokedex'
-              heroku_email: 'cezarbudeci@gmail.com'
-              healthcheck: 'https://cezar-budeci-pokedex-ce8d59703a06.herokuapp.com/version'
-              checkstring: '1.0.0'
-              delay: 5
-              rollbackonhealthcheckfailed: true
+#     deployment_tagging_pipeline:
+#         if: ${{ github.event_name == 'push' && !(contains(join(github.event.commits.*.message), '#skip')) }}
+#         needs: [build_test_pipeline]
+#         runs-on: ubuntu-20.04
+#         steps:
+#           - uses: actions/checkout@v3
+#           - name: Bump version and push tag
+#             uses: anothrNick/github-tag-action@1.67.0
+#             env:
+#                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#                 DEFAULT_BUMP: 'patch'
+#           - uses: akhileshns/heroku-deploy@v3.12.14
+#             with:
+#               heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+#               heroku_app_name: 'cezar-budeci-pokedex'
+#               heroku_email: 'cezarbudeci@gmail.com'
+#               healthcheck: 'https://cezar-budeci-pokedex-ce8d59703a06.herokuapp.com/version'
+#               checkstring: '1.0.0'
+#               delay: 5
+#               rollbackonhealthcheckfailed: true
