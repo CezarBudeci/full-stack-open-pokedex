@@ -15,6 +15,6 @@ jobs:
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
         with:
-          url: https://cezar-budeci-pokedex-ce8d59703a06.herokuapp.com/
+          url: https://cezar-budeci-pokedex-ce8d59703a06.herokuapp.com/123
           max-attempts: 3
           retry-delay: 30s
