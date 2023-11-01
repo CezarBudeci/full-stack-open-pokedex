@@ -1,0 +1,24 @@
+name: Deployment pipeline
+
+on:
+    push:
+        branches:
+            - master
+            - test2
+            - test1
+    pull_request:
+        branches: [test2]
+        types: [opened, synchronize]
+jobs:
+    deployment_tagging_pipeline:
+      runs-on: ubuntu-20.04
+      steps:
+        - uses: actions/checkout@v2
+        - name: github context
+          env:
+              GITHUB_CONTEXT: ${{ toJson(github) }}
+          run: echo "$GITHUB_CONTEXT"
+       
+        
+        
+         
