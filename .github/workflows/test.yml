@@ -18,6 +18,3 @@ jobs:
           env:
               GITHUB_CONTEXT: ${{ github.event_name == 'push' && !(contains(join(github.event.commits.*.message), '#skip')) }}
           run: echo "$GITHUB_CONTEXT"
-       
-        #test
-         
